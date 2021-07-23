@@ -6,7 +6,7 @@ jobs:
     steps:
     - name: curll
       run: |
-       curl -X GET -u mangeshpa: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 https://api.github.com/repos/mangeshpa/simple-java-maven-app/pulls?state=open  -o "./output.json"
+       curl -X GET -u mangeshpa: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 https://api.github.com/repos/mangeshpa/simple-java-maven-app  -o "./output.json"
     - name: Upload a Test Artifact
       uses: actions/upload-artifact@v2.2.4
       with:
