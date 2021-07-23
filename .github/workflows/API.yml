@@ -6,7 +6,7 @@ jobs:
     steps:
     - name: curll
       run: |
-       curl --header "PRIVATE-TOKEN: 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" "https://github.example.com/api/v4/projects/5/repository/commits/master"       
+       curl -X GET -u sandeeprampur1987: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 https://api.github.com/repos/sandeeprampur1987/action-framework/pulls|commit?state=open  -o "./output.json"
     - name: Upload a Test Artifact
       uses: actions/upload-artifact@v2.2.4
       with:
