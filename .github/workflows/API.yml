@@ -6,7 +6,7 @@ jobs:
     steps:
     - name: curl
       run: |
-       curl -H "Accept: application/vnd.github.v3+json" \https://github.com/mangeshpa/simple-java-maven-app/commits?state=open  -o "./output.json"
+       curl --header "PRIVATE-TOKEN: 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" "https://gitlab.example.com/api/v4/projects/5/repository/commits/master"       
     - name: Upload a Test Artifact
       uses: actions/upload-artifact@v2.2.4
       with:
