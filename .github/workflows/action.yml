@@ -47,6 +47,7 @@ jobs:
 #              body: ' Ups, something went wrong. Please checkout the following error:  '
 #            });
   Build:
+    environment: PipelineInv
     runs-on: ubuntu-latest 
     
     steps:
