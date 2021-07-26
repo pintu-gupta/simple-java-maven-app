@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: curl
-      run: curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app/commits | grep -w sha >> "./output.json"
+      run: |
+       curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app/commits | grep -w sha >> "./output.json"
+       curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app/repo | grep -w name >> "./output.json"
 
     - name: Upload a Test Artifact
       uses: actions/upload-artifact@v2.2.4
