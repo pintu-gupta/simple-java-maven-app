@@ -11,7 +11,7 @@ jobs:
     - name: curl
       run: |
        { curl https://api.github.com/repos/mangeshpa/simple-java-maven-app/commits | jq '.[] | {Commitid: .sha, Date: .commit.author.date, Commitauthor: .commit.author.name}'\ &&
-       curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app | jq '.[] | {Repositroy: .name, Branch: .default_branch}'; } >> "./output.json"
+       curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app | jq '.[] | {Branch: .default_branch}'; } >> "./output.json"
        #curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app/repo | grep -w name >> "./output.json"
 
     - name: Upload a Test Artifact
