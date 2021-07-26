@@ -12,7 +12,7 @@ jobs:
       run: |
        #{ curl https://api.github.com/repos/mangeshpa/simple-java-maven-app/commits | jq '.[] | {Commitid: .sha, Date: .commit.author.date, Commitauthor: .commit.author.name}'\ &&
        #curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app | jq '.[] | .name'; } >> "./output.json"
-       curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app | jq -r 'Reponame: .name'
+       curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app | jq  'Reponame: .name'
 
     - name: Upload a Test Artifact
       uses: actions/upload-artifact@v2.2.4
