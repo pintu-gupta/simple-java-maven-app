@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: curl
       run: |
-       curl https://api.github.com/repos/mangeshpa/simple-java-maven-app/commits | jq '.[] | {commitid: .sha, date: .commit.author.date,commitauthor: ..commit.author.name}' >> "./output.json"
+       curl https://api.github.com/repos/mangeshpa/simple-java-maven-app/commits | jq '.[] | {commitid: .sha, date: .commit.author.date, author: .commit.author.name}' >> "./output.json"
        #curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app/commits | grep -w sha >> "./output.json"
        #curl -X GET https://api.github.com/repos/mangeshpa/simple-java-maven-app/repo | grep -w name >> "./output.json"
 
