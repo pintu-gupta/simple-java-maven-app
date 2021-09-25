@@ -1,4 +1,4 @@
-name: ASP.NET CII
+name: ASP.NET CI
 
 on:
   push:
