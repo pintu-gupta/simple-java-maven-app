@@ -4,9 +4,15 @@
   <groupId>com.mycompany.app</groupId>
   <artifactId>my-app</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>v1</version>
   <name>my-app</name>
-  
+  <distributionManagement>
+  <repository>
+    <id>github</id>       
+    <name>Releases</name>
+    <url>https://maven.pkg.github.com/mangeshpa/simple-java-maven-app</url> 
+  </repository>
+</distributionManagement>
   <url>http://maven.apache.org</url>
   
   <properties>
