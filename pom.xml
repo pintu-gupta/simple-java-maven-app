@@ -6,7 +6,13 @@
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>my-app</name>
-  
+  <distributionManagement>
+  <repository>
+    <id>github</id>       
+    <name>Releases</name>
+    <url>https://maven.pkg.github.com/mangeshpa/simple-java-maven-app</url> 
+  </repository>
+</distributionManagement>
   <url>http://maven.apache.org</url>
   
   <properties>
@@ -38,6 +44,25 @@
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+          <plugin>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.8.7</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>prepare-agent</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>generate-code-coverage-report</id>
+          <phase>test</phase>
+          <goals>
+            <goal>report</goal>
+          </goals>
+        </execution>
+      </executions>
       </plugin>
     </plugins>
   </build>

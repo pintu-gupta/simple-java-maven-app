@@ -9,7 +9,7 @@ env:
 
 on:
   push:
-  # and the target with some regex to match specific  branch names
+  # and the target with some regex to match specific  branch namess
     branches:
       - master
       - 'FEATURE-[0-9]-[0-9]-[0-9]-X-BRANCH'
@@ -58,13 +58,13 @@ jobs:
           ref: ${{ github.REF }}
           fetch-depth: 0
           
-      - name: Notify dedicated teams channel
-        uses: jdcargile/ms-teams-notification@v1.3
-        with:
-          github-token: ${{ github.token }} # this will use the runner's token.
-          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          notification-summary: Build Started
-          notification-color: 17a2b8
+      #- name: Notify dedicated teams channel
+        #uses: jdcargile/ms-teams-notification@v1.3
+        #with:
+          #github-token: ${{ github.token }} # this will use the runner's token.
+          #ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          #notification-summary: Build Started
+          #notification-color: 17a2b8
 #      - name: show job status
 #        if: always()
 #        run: echo ${{ job.status }}
@@ -115,19 +115,48 @@ jobs:
 
 
       ######## Notify MS Teams Channel on Failure ########
-      - name: Notify dedicated MS teams channel [Build failure]
-        if: ${{ failure() }}
-        uses: jdcargile/ms-teams-notification@v1.3
-        with:
-          github-token: ${{ github.token }} # this will use the runner's token.
-          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          notification-summary: Deployment Failed while Building the code
-          notification-color: dc3545
+      #- name: Notify dedicated MS teams channel [Build failure]
+        #if: ${{ failure() }}
+        #uses: jdcargile/ms-teams-notification@v1.3
+        #with:
+          #github-token: ${{ github.token }} # this will use the runner's token.
+          #ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          #notification-summary: Deployment Failed while Building the code
+          #notification-color: dc3545
 
       ######## JUnit Test with Maven ########
       - name: Test with Maven
         run: mvn -B test --file pom.xml
-        
+      - name: Generate JaCoCo Badge
+        uses: cicirello/jacoco-badge-generator@v2
+        with:          
+          jacoco-csv-file: target/site/jacoco/jacoco.csv
+          badges-directory: .github/JaCoCo
+          generate-coverage-badge: true
+          coverage-badge-filename: jacoco.svg
+          generate-branches-badge: false
+          branches-badge-filename: branches.svg
+          colors: '#4c1 #97ca00 #a4a61d #dfb317 #fe7d37 #e05d44'
+          intervals: 100 90 80 70 60 0
+          on-missing-report: fail
+          fail-if-coverage-less-than: 0
+          fail-if-branches-less-than: 0
+          fail-on-coverage-decrease: false
+          fail-on-branches-decrease: false
+      - name: Log coverage percentage
+        run: |
+          echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
+          echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"     
+      - name: Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/   
+
+      - uses: codecov/codecov-action@v1
+        with:
+          file: ./**/target/site/jacoco/jacoco.xml
+          name: codecov        
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
@@ -163,7 +192,8 @@ jobs:
       - uses: actions/checkout@v2
  #       if: ${{ job.status == 2 }}
       - name: SonarCloud Scan
-        run: mvn -B sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=pintu-gupta-github -Dsonar.projectKey=pintu-gupta-github
+        #run: mvn -B sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=pintu-gupta-github -Dsonar.projectKey=pintu-gupta-github
+        run: mvn -B sonar:sonar -Dsonar.projectKey=Java-Maven-Jacoco-Sonar -Dsonar.projectName=Java-Maven-Jacoco-Sonar -Dsonar.host.url=http://3.141.23.89:9000 -Dsonar.login=103e87043953a8c9564be3a5fbed3a26a6d084c2
         #uses: sonarsource/sonarcloud-github-action@master
         #with:
         #  args: >
@@ -173,19 +203,19 @@ jobs:
         #    -Dsonar.projectKey=pintu-gupta-github
         #    -Dsonar.projectName=simple-java-maven-app
         #    -Dsonar.projectVersion=1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        #env:
+          #GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          #SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       ######## Notify MS Teams Channel on Failure ########
-      - name: Notify dedicated MS teams channel [Sonar Scan failure]
-        if: ${{ failure() }}
-        uses: jdcargile/ms-teams-notification@v1.3
-        with:
-          github-token: ${{ github.token }} # this will use the runner's token.
-          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          notification-summary: Deployment Failed while Building the code
-          notification-color: dc3545
+      #- name: Notify dedicated MS teams channel [Sonar Scan failure]
+        #if: ${{ failure() }}
+        #uses: jdcargile/ms-teams-notification@v1.3
+        #with:
+          #github-token: ${{ github.token }} # this will use the runner's token.
+          #ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          #notification-summary: Deployment Failed while Building the code
+          #notification-color: dc3545
   
         ######## Deployment - Dev Environment ########
   Deploy-Dev:
